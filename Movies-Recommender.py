@@ -123,7 +123,7 @@ def main():
         if success:
             st.dataframe(recommended_movies)
         else:
-            st.markdown('#####' + recommended_movies)
+            st.markdown('##### ' + recommended_movies)
 
 
 
