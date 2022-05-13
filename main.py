@@ -1,3 +1,4 @@
+from distutils.file_util import move_file
 import os
 
 import sys 
@@ -65,6 +66,9 @@ def Recommend(model, dataset, csr_data, movies_df, movieName, n):
 
     # get the index of the first result
     movie_id = movies.iloc[0]['movieId']
+    if len(dataset[dataset['movieId'] == movie_id].index.tolist()) < 1:
+        return False, str(movieName) + " movie doesn't exist in our data"
+
     movie_index = dataset[dataset['movieId'] == movie_id].index[0]
 
     # get the indices of the closest n neighbors from the results on the knn model
@@ -118,16 +122,21 @@ def main():
 
     st.title('Movies Recommender')
     st.markdown('''##### Movies Recommender recommends simmilar movies using Item Based Collaborative Filtering Approach by a trained K-Nearest-Neighbors Model on the MoviesLens dataset.''')
-    movie_name = str(st.text_input('Movie Name', placeholder='Recommends random movies if theis field is empty.')).title().strip()
+    movie_name = str(st.text_input('Movie Name', placeholder='Recommends random movies if this field is empty.')).title().strip()
     number_of_movies = st.number_input('Number of Generated Movies', min_value=1, max_value=50, value=10, step=1)
 
     
     if st.button('Recommend Simmilar Movies'):
-        if movie_name == '':
-            movie_name = str(random.choice(string.ascii_letters))
-
+  
+        while movie_name == '':
+            movie_name = str(random.choice(movies_df['title'].tolist())).strip()
+            if '(' in movie_name:
+                movie_name = movie_name.split("(")[0].split()[0]
+                success, recommended_movies = Recommend(model, data, csr_data, movies_df, movie_name, number_of_movies)
+                if not success:
+                    movie_name = ''
+        
         success, recommended_movies = Recommend(model, data, csr_data, movies_df, movie_name, number_of_movies)
-        # print("Movie Name is ", movie_name)
         if success:
             st.dataframe(recommended_movies)
         else:
