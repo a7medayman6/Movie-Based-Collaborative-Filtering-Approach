@@ -118,13 +118,12 @@ def main():
 
     st.title('Movies Recommender')
     st.markdown('''##### Movies Recommender recommends simmilar movies using Item Based Collaborative Filtering Approach by a trained K-Nearest-Neighbors Model on the MoviesLens dataset.''')
-    movie_name = str(st.text_input('Movie Name', placeholder='Recommends random movies if theis field is empty.')).title().strip()
+    movie_name = str(st.text_input('Movie Name')).title().strip()
     number_of_movies = st.number_input('Number of Generated Movies', min_value=1, max_value=50, value=10, step=1)
 
     
     if st.button('Recommend Simmilar Movies'):
         if movie_name == '':
-            movie_name = str(random.choice(string.ascii_letters))
 
         success, recommended_movies = Recommend(model, data, csr_data, movies_df, movie_name, number_of_movies)
         # print("Movie Name is ", movie_name)
