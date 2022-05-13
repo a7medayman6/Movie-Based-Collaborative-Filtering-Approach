@@ -122,7 +122,8 @@ def main():
         print("Movie Name is ", movie_name)
         if success:
             st.dataframe(recommended_movies)
-
+        else:
+            st.text_area(recommended_movies)
 
 
 
