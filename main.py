@@ -113,13 +113,13 @@ def main():
     model = LoadKNNModel(model_path, K)
 
     st.title('Movies Recommender')
-    st.markdown('''##### Movies Recommender recommends **20** simmilar movies using Item Based Collaborative Filtering Approach by a trained K-Nearest-Neighbors Model on the MoviesLens dataset.''')
-    movie_name = str(st.text_input('Movie Name')).title()
+    st.markdown('''##### Movies Recommender recommends simmilar movies using Item Based Collaborative Filtering Approach by a trained K-Nearest-Neighbors Model on the MoviesLens dataset.''')
+    movie_name = str(st.text_input('Movie Name')).title().strip()
     number_of_movies = st.number_input('Number of Generated Movies', min_value=1, max_value=50, value=10, step=1)
 
     if st.button('Recommend Simmilar Movies'):
         success, recommended_movies = Recommend(model, data, csr_data, movies_df, movie_name, number_of_movies)
-        print("Movie Name is ", movie_name)
+        # print("Movie Name is ", movie_name)
         if success:
             st.dataframe(recommended_movies)
         else:
