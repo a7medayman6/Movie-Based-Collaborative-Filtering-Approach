@@ -77,7 +77,7 @@ def Recommend(model, dataset, csr_data, movies_df, movieName, n):
     
     # get the indices of the closest n neighbors from the results of the knn model
     # the indices are the movies positions in the dataset
-    distances, indices = model.kneighbors(csr_data[movie_index], n_neighbors=n)    
+    distances, indices = model.kneighbors(csr_data[movie_index],n_neighbors=n)    
     
     # sort the output of the knn
     closest_movie_indices = sorted(list(zip(indices.squeeze().tolist(), distances.squeeze().tolist())),key=lambda x: x[1])[:0:-1]
@@ -168,7 +168,7 @@ def main():
             st.dataframe(recommended_movies)
             x, y = indicies.reshape((indicies[0,:].shape[0])), distances.reshape((distances[0,:].shape[0]))
             dat = recommended_movies['Movie Name'].tolist()
-            #dat = [item.split("(")[0].split()[0] for item in dat]
+            dat = [item.split("(")[0].split()[0] for item in dat]
             dat.insert(0, target_movie)
             fig = vis(x, y, dat)
             st.pyplot(fig)
